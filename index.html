@@ -76,14 +76,29 @@
   footer{
     margin-top:3.5rem;color:#c4b3a0;font-size:.85rem;text-align:center;
   }
+
+  /* 텍스트만 수정 가능하도록 표시 */
+  [contenteditable="true"]{
+    outline:none;
+    border-radius:4px;
+    transition:background .15s ease, box-shadow .15s ease;
+    cursor:text;
+  }
+  [contenteditable="true"]:hover{
+    background:rgba(193,127,67,.10);
+  }
+  [contenteditable="true"]:focus{
+    background:rgba(193,127,67,.14);
+    box-shadow:0 0 0 2px var(--accent1);
+  }
 </style>
 </head>
 <body>
 
   <div class="wrap">
-    <div class="kicker">BREWHAVEN CAFE · PRACTICE PORTFOLIO</div>
-    <h1>실습 결과 포트폴리오</h1>
-    <p class="sub">같은 자료를 바탕으로 AI와 함께 만든 3가지 결과물입니다. 카드를 클릭하면 각 실습 결과 페이지로 이동합니다.</p>
+    <div class="kicker" contenteditable="true">BREWHAVEN CAFE · PRACTICE PORTFOLIO</div>
+    <h1 contenteditable="true">실습 결과 포트폴리오</h1>
+    <p class="sub" contenteditable="true">같은 자료를 바탕으로 AI와 함께 만든 3가지 결과물입니다. 카드를 클릭하면 각 실습 결과 페이지로 이동합니다.</p>
 
     <div class="grid">
 
@@ -91,11 +106,11 @@
         <div class="card-top c1"></div>
         <div class="card-body">
           <div class="card-num c1">1</div>
-          <div class="card-title">상반기 실적 슬라이드</div>
-          <p class="card-desc">3개 지점 통합 매출·목표 달성률·신규 회원·재방문율을 6장짜리 발표 슬라이드로 정리했습니다.</p>
+          <div class="card-title" contenteditable="true">상반기 실적 슬라이드</div>
+          <p class="card-desc" contenteditable="true">3개 지점 통합 매출·목표 달성률·신규 회원·재방문율을 6장짜리 발표 슬라이드로 정리했습니다.</p>
           <div class="card-tags">
-            <span class="tag">발표 슬라이드</span>
-            <span class="tag">경영진 보고</span>
+            <span class="tag" contenteditable="true">발표 슬라이드</span>
+            <span class="tag" contenteditable="true">경영진 보고</span>
           </div>
           <div class="card-arrow">결과 보기 →</div>
         </div>
@@ -105,11 +120,11 @@
         <div class="card-top c2"></div>
         <div class="card-body">
           <div class="card-num c2">2</div>
-          <div class="card-title">8월 정기회의록</div>
-          <p class="card-desc">매니저 정기회의 메모를 안건별로 클릭해서 펼쳐보는 리포트로 재구성했습니다. 담당자별 색상, 실행항목 체크박스 포함.</p>
+          <div class="card-title" contenteditable="true">8월 정기회의록</div>
+          <p class="card-desc" contenteditable="true">매니저 정기회의 메모를 안건별로 클릭해서 펼쳐보는 리포트로 재구성했습니다. 담당자별 색상, 실행항목 체크박스 포함.</p>
           <div class="card-tags">
-            <span class="tag">회의록</span>
-            <span class="tag">아코디언 UI</span>
+            <span class="tag" contenteditable="true">회의록</span>
+            <span class="tag" contenteditable="true">아코디언 UI</span>
           </div>
           <div class="card-arrow">결과 보기 →</div>
         </div>
@@ -119,11 +134,11 @@
         <div class="card-top c3"></div>
         <div class="card-body">
           <div class="card-num c3">3</div>
-          <div class="card-title">고객 만족도 설문 인포그래픽</div>
-          <p class="card-desc">문항별 평균 만족도와 응답 분포를 막대그래프·원그래프로 시각화했습니다. 외부 라이브러리 없이 순수 SVG로 제작.</p>
+          <div class="card-title" contenteditable="true">고객 만족도 설문 인포그래픽</div>
+          <p class="card-desc" contenteditable="true">문항별 평균 만족도와 응답 분포를 막대그래프·원그래프로 시각화했습니다. 외부 라이브러리 없이 순수 SVG로 제작.</p>
           <div class="card-tags">
-            <span class="tag">설문 결과</span>
-            <span class="tag">SVG 인포그래픽</span>
+            <span class="tag" contenteditable="true">설문 결과</span>
+            <span class="tag" contenteditable="true">SVG 인포그래픽</span>
           </div>
           <div class="card-arrow">결과 보기 →</div>
         </div>
@@ -131,8 +146,20 @@
 
     </div>
 
-    <footer>실습용 가상 데이터 · 브루헤이븐 카페</footer>
+    <footer contenteditable="true">실습용 가상 데이터 · 브루헤이븐 카페</footer>
   </div>
+
+  <script>
+    // 카드(a.card) 안의 텍스트를 편집할 때는 링크 이동을 막고,
+    // 텍스트가 아닌 나머지 영역(카드 배경, 화살표 등)을 클릭했을 때만 정상적으로 이동합니다.
+    document.querySelectorAll('a.card').forEach(function(card){
+      card.addEventListener('click', function(e){
+        if (e.target.closest('[contenteditable="true"]')) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
