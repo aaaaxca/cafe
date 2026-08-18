@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브루헤이븐 카페 8월 정기회의록</title>
+<style>
+  :root{
+    --coffee:#3d2b1f;
+    --cream:#faf3e9;
+    --card:#ffffff;
+    --muted:#8a7863;
+    --border:#e7dccb;
+
+    --c-doyun:#4472C4;
+    --c-seoyeon:#c1477a;
+    --c-haneul:#3f9142;
+    --c-minjun:#8256c9;
+    --c-all:#6b6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    background:var(--cream);
+    color:var(--coffee);
+    padding:5vw 6vw 8vw;
+    max-width:900px;
+    margin:0 auto;
+  }
+  .header{margin-bottom:2rem;}
+  .header .kicker{
+    font-size:.85rem;letter-spacing:.15em;color:var(--c-doyun);
+    font-weight:700;text-transform:uppercase;margin-bottom:.6rem;
+  }
+  h1{font-size:2.1rem;font-weight:800;margin-bottom:1rem;}
+  dl.meta{
+    display:grid;grid-template-columns:auto 1fr;gap:.3rem 1rem;
+    font-size:.95rem;color:#5a4636;
+  }
+  dl.meta dt{font-weight:700;color:var(--muted);}
+
+  .legend{
+    display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;
+    margin:1.6rem 0 2rem;padding:1rem 1.2rem;
+    background:var(--card);border:1px solid var(--border);border-radius:10px;
+  }
+  .legend-label{font-weight:700;font-size:.85rem;color:var(--muted);margin-right:.4rem;}
+  .chip{
+    display:inline-block;padding:.3rem .8rem;border-radius:999px;
+    font-size:.85rem;font-weight:600;color:#fff;
+  }
+  .owner-김도윤{background:var(--c-doyun);}
+  .owner-박서연{background:var(--c-seoyeon);}
+  .owner-이하늘{background:var(--c-haneul);}
+  .owner-최민준{background:var(--c-minjun);}
+  .owner-전원{background:var(--c-all);}
+
+  .accordion{display:flex;flex-direction:column;gap:.8rem;}
+  .item{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;
+  }
+  .item-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.1rem 1.4rem;cursor:pointer;user-select:none;
+  }
+  .item-header:hover{background:#fbf6ee;}
+  .item-title{display:flex;align-items:center;gap:.8rem;}
+  .item-num{
+    width:28px;height:28px;border-radius:50%;background:var(--coffee);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;
+    flex-shrink:0;
+  }
+  .item-name{font-size:1.1rem;font-weight:700;}
+  .chevron{transition:transform .25s ease;color:var(--muted);font-size:1rem;}
+  .item.open .chevron{transform:rotate(180deg);}
+
+  .item-body{
+    max-height:0;overflow:hidden;transition:max-height .3s ease;
+  }
+  .item.open .item-body{max-height:600px;}
+  .item-body-inner{padding:0 1.4rem 1.4rem;}
+
+  .section-label{
+    font-size:.8rem;font-weight:700;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.05em;margin:1rem 0 .4rem;
+  }
+  .section-label:first-child{margin-top:0;}
+  .section-text{font-size:.98rem;line-height:1.6;color:#4a3a2c;}
+
+  .action-row{
+    display:flex;align-items:flex-start;gap:.7rem;
+    padding:.6rem 0;border-top:1px dashed var(--border);
+  }
+  .action-row:first-of-type{border-top:none;}
+  .action-row input[type=checkbox]{
+    margin-top:.25rem;width:18px;height:18px;flex-shrink:0;cursor:pointer;
+  }
+  .action-text{font-size:.95rem;line-height:1.5;}
+  .action-owner{
+    display:inline-block;padding:.15rem .6rem;border-radius:999px;
+    font-size:.78rem;font-weight:700;color:#fff;margin-right:.4rem;
+  }
+  .action-due{color:var(--muted);font-size:.85rem;margin-left:.3rem;}
+
+  footer{
+    margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);
+    font-size:.9rem;color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="kicker">BREWHAVEN CAFE · MEETING NOTES</div>
+    <h1>8월 매니저 정기회의록</h1>
+    <dl class="meta">
+      <dt>일시</dt><dd>2026년 8월 6일(목) 10:00 ~ 11:10</dd>
+      <dt>장소</dt><dd>본점 2층 사무공간</dd>
+      <dt>참석</dt><dd>김도윤(본사 매니저), 박서연(본점), 이하늘(강남점), 최민준(홍대점) · 불참 없음</dd>
+    </dl>
+  </div>
+
+  <div class="legend">
+    <span class="legend-label">담당자</span>
+    <span class="chip owner-김도윤">김도윤 · 본사 매니저</span>
+    <span class="chip owner-박서연">박서연 · 본점</span>
+    <span class="chip owner-이하늘">이하늘 · 강남점</span>
+    <span class="chip owner-최민준">최민준 · 홍대점</span>
+    <span class="chip owner-전원">점장 전원</span>
+  </div>
+
+  <div class="accordion" id="accordion">
+
+    <div class="item">
+      <div class="item-header" onclick="toggle(this)">
+        <div class="item-title"><span class="item-num">1</span><span class="item-name">원두 단가 인상</span></div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="item-body">
+        <div class="item-body-inner">
+          <div class="section-label">논의내용</div>
+          <p class="section-text">원두 단가가 최근 15% 인상됨. 기존 거래처를 유지할지, 다른 곳으로 변경할지 논의함.</p>
+          <div class="section-label">결정사항</div>
+          <p class="section-text">대체 로스터리 2곳의 견적을 받아본 뒤, 다음 회의에서 기존 거래처와 비교표를 만들어 검토하기로 함.</p>
+          <div class="section-label">실행항목</div>
+          <div class="action-row">
+            <input type="checkbox" id="a1">
+            <label for="a1" class="action-text"><span class="action-owner owner-김도윤">김도윤</span>대체 거래처 2곳 견적 요청<span class="action-due">(이번 주 내)</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-header" onclick="toggle(this)">
+        <div class="item-title"><span class="item-num">2</span><span class="item-name">콜드브루 여름 시즌 메뉴 반응 저조</span></div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="item-body">
+        <div class="item-body-inner">
+          <div class="section-label">논의내용</div>
+          <p class="section-text">콜드브루 라인업 판매 반응이 예상보다 낮음. SNS 홍보가 부족했던 것이 원인으로 추정됨. 급한 사안으로, 이번 달 안에는 결론이 필요함.</p>
+          <div class="section-label">결정사항</div>
+          <p class="section-text">SNS 게시물 노출 데이터를 확인한 뒤, 이번 달 내 원인과 대응 방향을 결론짓기로 함.</p>
+          <div class="section-label">실행항목</div>
+          <div class="action-row">
+            <input type="checkbox" id="a2">
+            <label for="a2" class="action-text"><span class="action-owner owner-김도윤">김도윤</span>SNS 게시물 노출 데이터 확인 및 회신<span class="action-due">(다음 주 초까지)</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-header" onclick="toggle(this)">
+        <div class="item-title"><span class="item-num">3</span><span class="item-name">아르바이트 스케줄 조정</span></div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="item-body">
+        <div class="item-body-inner">
+          <div class="section-label">논의내용</div>
+          <p class="section-text">9월 학기 시작 시 아르바이트생 절반가량이 근무 시간대 조정을 요청할 것으로 예상됨.</p>
+          <div class="section-label">결정사항</div>
+          <p class="section-text">각 지점 점장이 소속 아르바이트생 스케줄 상황을 사전에 파악하여, 다음 회의 때 조정안을 가져오기로 함.</p>
+          <div class="section-label">실행항목</div>
+          <div class="action-row">
+            <input type="checkbox" id="a3">
+            <label for="a3" class="action-text"><span class="action-owner owner-전원">점장 전원</span>지점별 아르바이트 스케줄 파악<span class="action-due">(다음 회의 전까지)</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-header" onclick="toggle(this)">
+        <div class="item-title"><span class="item-num">4</span><span class="item-name">매장 좌석 회전율 저하</span></div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="item-body">
+        <div class="item-body-inner">
+          <div class="section-label">논의내용</div>
+          <p class="section-text">노트북 이용 손님의 장시간 체류로 좌석 회전율이 낮아지고 있음. 본점·강남점 공통으로 겪는 문제로 확인됨.</p>
+          <div class="section-label">결정사항</div>
+          <p class="section-text">좌석 배치나 이용시간 안내 조정을 검토하되, 아직 확정된 방침은 아님.</p>
+          <div class="section-label">실행항목</div>
+          <div class="action-row">
+            <input type="checkbox" id="a4">
+            <label for="a4" class="action-text"><span class="action-owner owner-김도윤">김도윤</span>좌석 운영 가이드라인 초안 작성<span class="action-due">(다음 회의 전까지)</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-header" onclick="toggle(this)">
+        <div class="item-title"><span class="item-num">5</span><span class="item-name">신메뉴 시식회 일정 확인</span></div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="item-body">
+        <div class="item-body-inner">
+          <div class="section-label">논의내용</div>
+          <p class="section-text">다음 달 예정된 신메뉴 시식회 일정을 다시 한번 확인할 필요가 있음.</p>
+          <div class="section-label">결정사항</div>
+          <p class="section-text">본사 대표 컨펌을 받은 뒤 점장들에게 회신하기로 함.</p>
+          <div class="section-label">실행항목</div>
+          <div class="action-row">
+            <input type="checkbox" id="a5">
+            <label for="a5" class="action-text"><span class="action-owner owner-김도윤">김도윤</span>대표 컨펌 요청 및 회신</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-header" onclick="toggle(this)">
+        <div class="item-title"><span class="item-num">6</span><span class="item-name">소모품 재고 발주 마감일 공지</span></div>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="item-body">
+        <div class="item-body-inner">
+          <div class="section-label">논의내용</div>
+          <p class="section-text">컵·빨대 등 소모품 재고 발주 마감일을 다시 공지해달라는 요청이 있었음.</p>
+          <div class="section-label">결정사항</div>
+          <p class="section-text">점장 단톡방에 마감일을 재공지하기로 함.</p>
+          <div class="section-label">실행항목</div>
+          <div class="action-row">
+            <input type="checkbox" id="a6">
+            <label for="a6" class="action-text"><span class="action-owner owner-김도윤">김도윤</span>소모품 발주 마감일 공지<span class="action-due">(이번 주 내)</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>다음 회의: 2026년 9월 3일(목), 같은 시간</footer>
+
+<script>
+  function toggle(headerEl){
+    const item = headerEl.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.item.open').forEach(el => el.classList.remove('open'));
+    if(!wasOpen){ item.classList.add('open'); }
+  }
+  // 첫 안건은 기본으로 펼쳐두기
+  document.querySelector('.item').classList.add('open');
+</script>
+
+</body>
+</html>

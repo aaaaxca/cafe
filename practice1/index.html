@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브루헤이븐 카페 2026년 상반기 운영 보고</title>
+<style>
+  :root{
+    --dark-bg:#2E1D14;
+    --cream-bg:#F4ECDD;
+    --card-bg:#FBF5EA;
+    --card-bg-dark:#42301F;
+    --card-border-dark:#5B4530;
+    --ink:#3B2A1F;
+    --ink-muted:#7A6552;
+    --cream-text:#F8F1E4;
+    --cream-muted:#CBB89A;
+    --brown:#8B4513;
+    --tan:#D9A441;
+    --green:#2E7D32;
+    --rust:#C1440E;
+    --grid:#D8C6AC;
+    --grid-dark:#5B4530;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; width:100%; height:100%;
+    background:#1C120C; overflow:hidden;
+    font-family:'Calibri','Segoe UI','Malgun Gothic',Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .deck{
+    display:flex; width:100vw; height:100vh; overflow-x:auto; overflow-y:hidden;
+    scroll-snap-type:x mandatory; scroll-behavior:smooth;
+    scrollbar-width:none;
+  }
+  .deck::-webkit-scrollbar{display:none;}
+  .slide{
+    flex:0 0 100vw; min-width:0; height:100vh; scroll-snap-align:start;
+    display:flex; align-items:center; justify-content:center; position:relative;
+    overflow:hidden;
+  }
+  .stage{
+    width:1280px; height:720px; position:relative; flex:none;
+    transform-origin:center center;
+    box-shadow:0 30px 80px rgba(0,0,0,0.45);
+  }
+  .stage.dark{ background:var(--dark-bg); }
+  .stage.light{ background:var(--cream-bg); }
+
+  h1,h2,h3,p,span,div{ margin:0; padding:0; }
+  .serif{ font-family:'Cambria','Georgia',serif; }
+
+  /* ---------- shared header block for content slides ---------- */
+  .badge{
+    position:absolute; left:58px; top:53px; width:69px; height:69px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--brown); color:var(--cream-text);
+    font-family:'Calibri',Arial,sans-serif; font-weight:700; font-size:26px;
+  }
+  .head-title{
+    position:absolute; left:149px; top:44px; width:1074px; height:60px;
+    font-size:32px; font-weight:700; color:var(--ink); display:flex; align-items:center;
+  }
+  .head-sub{
+    position:absolute; left:149px; top:108px; width:1074px; height:52px;
+    font-size:16.5px; color:var(--ink-muted); line-height:1.35;
+  }
+  .footer-cite{
+    position:absolute; right:58px; bottom:34px; font-size:12px; color:var(--ink-muted);
+  }
+  .footer-cite.on-dark{ color:var(--cream-muted); }
+
+  /* ---------- stat tiles ---------- */
+  .stat-col{ position:absolute; left:821px; top:192px; width:398px; }
+  .stat-tile{
+    background:var(--card-bg); border-radius:10px; padding:18px 20px;
+    box-shadow:0 4px 14px rgba(90,70,45,0.16);
+    height:129.6px; margin-bottom:20px; position:relative;
+  }
+  .stat-tile:last-child{ margin-bottom:0; }
+  .stat-label{ font-size:13px; font-weight:700; color:var(--ink-muted); }
+  .stat-value{ font-family:'Cambria',Georgia,serif; font-size:34px; font-weight:700; color:var(--brown); margin-top:8px; }
+  .stat-value.green{ color:var(--green); }
+  .stat-value.rust{ color:var(--rust); }
+  .stat-caption{ font-size:12px; font-style:italic; color:var(--ink-muted); position:absolute; bottom:14px; }
+
+  /* ---------- chart area ---------- */
+  .chart-wrap{ position:absolute; left:58px; top:192px; width:740px; height:437px; }
+  .chart-wrap svg{ width:100%; height:100%; overflow:visible; }
+  .legend{ position:absolute; left:58px; top:648px; width:740px; display:flex; gap:26px; align-items:center; font-size:13px; color:var(--ink-muted); }
+  .legend .item{ display:flex; align-items:center; gap:8px; }
+  .legend .swatch{ width:14px; height:14px; border-radius:3px; }
+  .legend .swatch.line{ width:20px; height:0; border-top:2px dashed var(--rust); border-radius:0; }
+
+  .tooltip{
+    position:absolute; pointer-events:none; background:var(--dark-bg); color:var(--cream-text);
+    padding:8px 12px; border-radius:8px; font-size:13px; line-height:1.5; white-space:nowrap;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35); opacity:0; transition:opacity .12s ease; z-index:20;
+  }
+  .tooltip b{ color:var(--tan); }
+
+  /* ---------- Slide 1 : cover ---------- */
+  .cover-badge{
+    position:absolute; left:50%; top:95px; width:110px; height:110px; margin-left:-55px;
+    border-radius:50%; background:var(--brown); border:2px solid var(--tan);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--cream-text); font-size:26px; font-weight:700; font-family:'Cambria',serif;
+  }
+  .cover-kicker{
+    position:absolute; left:0; top:255px; width:100%; text-align:center;
+    font-size:18px; font-weight:700; letter-spacing:2px; color:var(--tan);
+  }
+  .cover-title{
+    position:absolute; left:0; top:300px; width:100%; text-align:center;
+    font-size:46px; font-weight:700; color:var(--cream-text); font-family:'Cambria',serif;
+  }
+  .cover-subtitle{
+    position:absolute; left:0; top:412px; width:100%; text-align:center;
+    font-size:16px; color:var(--cream-muted);
+  }
+  .cover-foot{
+    position:absolute; left:0; bottom:52px; width:100%; text-align:center;
+    font-size:12px; font-style:italic; color:var(--cream-muted);
+  }
+  .cover-hint{
+    position:absolute; left:0; bottom:96px; width:100%; text-align:center;
+    font-size:12px; color:var(--cream-muted); opacity:.75;
+  }
+
+  /* ---------- Slide 6 : summary ---------- */
+  .sum-kicker{ position:absolute; left:58px; top:50px; font-size:14px; font-weight:700; letter-spacing:2px; color:var(--tan); }
+  .sum-title{ position:absolute; left:58px; top:85px; width:1164px; font-size:34px; font-weight:700; color:var(--cream-text); font-family:'Cambria',serif; }
+  .sum-tiles{ position:absolute; left:58px; top:195px; width:1164px; display:flex; gap:38px; }
+  .sum-tile{
+    flex:1; background:var(--card-bg-dark); border:1px solid var(--card-border-dark);
+    border-radius:10px; padding:20px; height:182px; position:relative;
+  }
+  .sum-tile .stat-label{ color:var(--tan); }
+  .sum-tile .stat-value{ color:var(--cream-text); font-size:32px; }
+  .sum-tile .stat-caption{ color:var(--cream-muted); font-style:normal; bottom:18px; }
+  .sum-callout{
+    position:absolute; left:58px; top:435px; width:1164px; height:188px;
+    background:var(--card-bg-dark); border:1px solid var(--card-border-dark); border-radius:10px;
+    padding:28px 32px;
+  }
+  .sum-callout .status-dot{ width:14px; height:14px; border-radius:50%; background:var(--rust); display:inline-block; vertical-align:middle; margin-right:10px; }
+  .sum-callout .label{ font-size:14px; font-weight:700; color:var(--rust); vertical-align:middle; }
+  .sum-callout .body{ margin-top:18px; font-size:16px; line-height:1.6; color:var(--cream-text); }
+
+  /* ---------- nav controls (viewport-fixed, outside stage) ---------- */
+  .nav-btn{
+    position:fixed; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%;
+    background:rgba(46,29,20,0.55); color:#F4ECDD; border:1px solid rgba(217,164,65,0.5);
+    display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer;
+    z-index:50; user-select:none; transition:background .15s ease;
+  }
+  .nav-btn:hover{ background:rgba(139,69,19,0.85); }
+  #prevBtn{ left:22px; }
+  #nextBtn{ right:22px; }
+  .dots{
+    position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+    display:flex; gap:10px; z-index:50;
+  }
+  .dot{
+    width:9px; height:9px; border-radius:50%; background:rgba(217,164,65,0.35);
+    cursor:pointer; transition:background .15s ease, transform .15s ease;
+  }
+  .dot.active{ background:var(--tan); transform:scale(1.3); }
+  .counter{
+    position:fixed; right:24px; bottom:20px; font-size:12px; color:rgba(244,236,221,0.7);
+    font-family:'Calibri',Arial,sans-serif; z-index:50;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ===================== Slide 1 : 표지 ===================== -->
+  <section class="slide"><div class="stage dark">
+    <div class="cover-badge">BH</div>
+    <div class="cover-kicker">브루헤이븐 카페</div>
+    <div class="cover-title">2026년 상반기 운영 보고</div>
+    <div class="cover-subtitle">매출 성장 · 목표 달성률 · 신규 회원 · 재방문율 종합 (2026.01 ~ 06)</div>
+    <div class="cover-hint">→ 오른쪽으로 스크롤하거나 화살표를 눌러 시작하세요</div>
+    <div class="cover-foot">실습용 가상 데이터 · 브루헤이븐 카페 3개 지점 기준</div>
+  </div></section>
+
+  <!-- ===================== Slide 2 : 매출 성장 ===================== -->
+  <section class="slide"><div class="stage light">
+    <div class="badge">₩</div>
+    <div class="head-title">매출은 상반기 내내 상승 흐름, 6월 최고 실적 경신</div>
+    <div class="head-sub">1월 3,120만원에서 6월 4,230만원으로 증가했으며(4월 일시 조정 제외), 5~6월은 월별 목표를 초과 달성했습니다.</div>
+
+    <div class="chart-wrap"><svg id="chart-revenue" viewBox="0 0 740 437"></svg></div>
+    <div class="legend">
+      <div class="item"><span class="swatch" style="background:var(--brown)"></span>실제 매출(만원)</div>
+      <div class="item"><span class="swatch" style="background:var(--tan)"></span>목표(만원)</div>
+    </div>
+
+    <div class="stat-col">
+      <div class="stat-tile"><div class="stat-label">6월 매출</div><div class="stat-value">4,230만원</div><div class="stat-caption">상반기 최고</div></div>
+      <div class="stat-tile"><div class="stat-label">상반기 누적 매출</div><div class="stat-value">21,810만원</div></div>
+      <div class="stat-tile"><div class="stat-label">1월 대비 성장률</div><div class="stat-value green">+35.6%</div><div class="stat-caption">1월 → 6월</div></div>
+    </div>
+    <div class="footer-cite">자료: cafe_sales_data.xlsx</div>
+  </div></section>
+
+  <!-- ===================== Slide 3 : 목표 달성률 ===================== -->
+  <section class="slide"><div class="stage light">
+    <div class="badge">%</div>
+    <div class="head-title">상반기 평균 달성률 101.9%, 3개월은 미달 · 3개월은 초과</div>
+    <div class="head-sub">1·2·4월은 목표에 못 미쳤지만 3·5·6월은 목표를 넘어서며, 상반기 누적으로는 목표를 초과 달성했습니다.</div>
+
+    <div class="chart-wrap"><svg id="chart-achieve" viewBox="0 0 740 437"></svg></div>
+    <div class="legend">
+      <div class="item"><span class="swatch" style="background:var(--brown)"></span>달성률(%)</div>
+      <div class="item"><span class="swatch line"></span>목표선 100%</div>
+    </div>
+
+    <div class="stat-col">
+      <div class="stat-tile"><div class="stat-label">상반기 평균 달성률</div><div class="stat-value green">101.9%</div></div>
+      <div class="stat-tile"><div class="stat-label">최고 달성률</div><div class="stat-value green">111.3%</div><div class="stat-caption">6월</div></div>
+      <div class="stat-tile"><div class="stat-label">최저 달성률</div><div class="stat-value rust">91.8%</div><div class="stat-caption">1월</div></div>
+    </div>
+    <div class="footer-cite">자료: cafe_sales_data.xlsx</div>
+  </div></section>
+
+  <!-- ===================== Slide 4 : 신규 회원 ===================== -->
+  <section class="slide"><div class="stage light">
+    <div class="badge">+</div>
+    <div class="head-title">신규 회원, 1월 58명에서 6월 92명으로 확대</div>
+    <div class="head-sub">4월 일시 조정을 제외하면 신규 회원이 꾸준히 늘어 상반기 누적 441명을 기록했습니다.</div>
+
+    <div class="chart-wrap"><svg id="chart-members" viewBox="0 0 740 437"></svg></div>
+
+    <div class="stat-col">
+      <div class="stat-tile"><div class="stat-label">6월 신규 회원</div><div class="stat-value">92명</div><div class="stat-caption">상반기 최고</div></div>
+      <div class="stat-tile"><div class="stat-label">상반기 누적</div><div class="stat-value">441명</div></div>
+      <div class="stat-tile"><div class="stat-label">1월 대비 증가율</div><div class="stat-value green">+58.6%</div><div class="stat-caption">1월 → 6월</div></div>
+    </div>
+    <div class="footer-cite">자료: cafe_sales_data.xlsx</div>
+  </div></section>
+
+  <!-- ===================== Slide 5 : 재방문율 ===================== -->
+  <section class="slide"><div class="stage light">
+    <div class="badge">↑</div>
+    <div class="head-title">재방문율도 완만한 상승세, 단골 고객 기반 확대</div>
+    <div class="head-sub">재방문율이 1월 41%에서 6월 52%까지 오르며(4월 일시 조정 제외) 단골 고객 확보 흐름이 뚜렷합니다.</div>
+
+    <div class="chart-wrap"><svg id="chart-revisit" viewBox="0 0 740 437"></svg></div>
+
+    <div class="stat-col">
+      <div class="stat-tile"><div class="stat-label">6월 재방문율</div><div class="stat-value">52%</div><div class="stat-caption">상반기 최고</div></div>
+      <div class="stat-tile"><div class="stat-label">상반기 평균</div><div class="stat-value">45.8%</div></div>
+      <div class="stat-tile"><div class="stat-label">1월 대비 변화</div><div class="stat-value green">+11%p</div><div class="stat-caption">1월 → 6월</div></div>
+    </div>
+    <div class="footer-cite">자료: cafe_sales_data.xlsx</div>
+  </div></section>
+
+  <!-- ===================== Slide 6 : 종합 ===================== -->
+  <section class="slide"><div class="stage dark">
+    <div class="sum-kicker">종합</div>
+    <div class="sum-title">상반기 성장은 뚜렷, 4월 조정 원인 분석과 하반기 대응이 관건</div>
+
+    <div class="sum-tiles">
+      <div class="sum-tile"><div class="stat-label">누적 매출</div><div class="stat-value">21,810만원</div><div class="stat-caption">목표 대비 101.9%</div></div>
+      <div class="sum-tile"><div class="stat-label">신규 회원</div><div class="stat-value">441명</div><div class="stat-caption">1월 대비 +58.6%</div></div>
+      <div class="sum-tile"><div class="stat-label">재방문율 평균</div><div class="stat-value">45.8%</div><div class="stat-caption">1월 대비 +11%p</div></div>
+      <div class="sum-tile"><div class="stat-label">목표 초과 달성</div><div class="stat-value">3/6개월</div><div class="stat-caption">3·5·6월</div></div>
+    </div>
+
+    <div class="sum-callout">
+      <span class="status-dot"></span><span class="label">하반기 대응 필요</span>
+      <div class="body">매출·신규 회원·재방문율 모두 4월에 일시 조정된 뒤 5월부터 반등했습니다. 또한 1·2·4월은 목표 미달 구간으로, 원인 분석과 하반기 초 대응 방안 논의가 필요합니다.</div>
+    </div>
+
+    <div class="footer-cite on-dark">자료: cafe_sales_data.xlsx · 실습용 가상 데이터</div>
+  </div></section>
+
+</div>
+
+<div class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</div>
+<div class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</div>
+<div class="dots" id="dots"></div>
+<div class="counter" id="counter">1 / 6</div>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+/* ============================================================
+   Data (source of truth: cafe_sales_data.xlsx)
+   ============================================================ */
+const MONTHS = ['1월','2월','3월','4월','5월','6월'];
+const REVENUE = [3120,3350,3680,3520,3910,4230];
+const TARGET  = [3400,3400,3500,3600,3700,3800];
+const ACHIEVEMENT = [91.8,98.5,105.1,97.8,105.7,111.3];
+const MEMBERS = [58,63,74,69,85,92];
+const REVISIT = [41,43,46,44,49,52];
+
+const COLOR = {
+  brown:'#8B4513', tan:'#D9A441', green:'#2E7D32', rust:'#C1440E',
+  ink:'#3B2A1F', inkMuted:'#7A6552', grid:'#D8C6AC'
+};
+
+const svgNS = 'http://www.w3.org/2000/svg';
+const tooltip = document.getElementById('tooltip');
+const stageEls = Array.from(document.querySelectorAll('.stage'));
+
+function el(tag, attrs){
+  const n = document.createElementNS(svgNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  return n;
+}
+
+function showTooltip(stageEl, evtClientX, evtClientY, html){
+  tooltip.innerHTML = html;
+  const rect = stageEl.getBoundingClientRect();
+  const scale = rect.width/1280;
+  let x = (evtClientX - rect.left)/scale + 16;
+  let y = (evtClientY - rect.top)/scale - 10;
+  tooltip.style.left = x+'px';
+  tooltip.style.top = y+'px';
+  tooltip.style.opacity = '1';
+}
+function hideTooltip(){ tooltip.style.opacity = '0'; }
+
+/* ---------- nice axis helper ---------- */
+function fmt(n, decimals){ return n.toLocaleString('ko-KR', {minimumFractionDigits:decimals||0, maximumFractionDigits:decimals||0}); }
+
+/* ============================================================
+   Grouped / single bar chart
+   ============================================================ */
+function renderBarChart(svgId, opts){
+  const svg = document.getElementById(svgId);
+  const stageEl = svg.closest('.stage');
+  const W = 740, H = 437;
+  const M = {top: 14, right: 10, bottom: 34, left: 52};
+  const plotW = W - M.left - M.right;
+  const plotH = H - M.top - M.bottom;
+  const n = opts.categories.length;
+  const slotW = plotW / n;
+
+  const yMax = opts.yMax, yTicks = opts.yTicks;
+  const yScale = v => M.top + plotH - (v / yMax) * plotH;
+
+  // gridlines + axis labels
+  yTicks.forEach(t => {
+    const y = yScale(t);
+    svg.appendChild(el('line', {x1:M.left, x2:W-M.right, y1:y, y2:y, stroke:COLOR.grid, 'stroke-width':1}));
+    const label = el('text', {x:M.left-10, y:y+4, 'text-anchor':'end', 'font-size':11, fill:COLOR.inkMuted, 'font-family':'Calibri,Arial,sans-serif'});
+    label.textContent = opts.tickFormat ? opts.tickFormat(t) : t;
+    svg.appendChild(label);
+  });
+  // baseline
+  svg.appendChild(el('line', {x1:M.left, x2:W-M.right, y1:yScale(0), y2:yScale(0), stroke:COLOR.grid, 'stroke-width':1.4}));
+
+  const seriesCount = opts.series.length;
+  const groupPad = 0.22; // fraction of slot reserved as side padding
+  const usable = slotW * (1 - groupPad*2);
+  const gap = seriesCount > 1 ? 4 : 0;
+  const barW = (usable - gap*(seriesCount-1)) / seriesCount;
+
+  opts.categories.forEach((cat, i) => {
+    const slotX = M.left + i*slotW;
+    const groupX = slotX + slotW*groupPad;
+
+    // invisible hover capture for whole category slot
+    const hoverRect = el('rect', {x:slotX, y:M.top, width:slotW, height:plotH, fill:'transparent'});
+    hoverRect.addEventListener('mouseenter', (e)=>{
+      const lines = opts.series.map(s=>`<b>${s.name}</b> ${opts.tickFormat ? opts.tickFormat(s.values[i]) : s.values[i]}${opts.unit||''}`).join('<br>');
+      showTooltip(stageEl, e.clientX, e.clientY, `${cat}<br>${lines}`);
+    });
+    hoverRect.addEventListener('mousemove', (e)=>{ showTooltip(stageEl, e.clientX, e.clientY, tooltip.innerHTML); });
+    hoverRect.addEventListener('mouseleave', hideTooltip);
+    svg.appendChild(hoverRect);
+
+    opts.series.forEach((s, si) => {
+      const v = s.values[i];
+      const bx = groupX + si*(barW+gap);
+      const by = yScale(v);
+      const bh = yScale(0) - by;
+      const r = 4;
+      const path = `M${bx},${by+r} a${r},${r} 0 0 1 ${r},${-r} h${barW-2*r} a${r},${r} 0 0 1 ${r},${r} v${bh-r} h${-barW} Z`;
+      const bar = el('path', {d:path, fill:s.color, style:'pointer-events:none'});
+      svg.appendChild(bar);
+
+      if(opts.directLabels !== false){
+        const lbl = el('text', {x:bx+barW/2, y:by-8, 'text-anchor':'middle', 'font-size':opts.labelSize||12, fill:COLOR.ink, 'font-family':'Calibri,Arial,sans-serif', style:'pointer-events:none'});
+        lbl.textContent = opts.labelFormat ? opts.labelFormat(v) : v;
+        svg.appendChild(lbl);
+      }
+    });
+
+    const catLbl = el('text', {x:slotX+slotW/2, y:H-M.bottom+22, 'text-anchor':'middle', 'font-size':13, fill:COLOR.inkMuted, 'font-family':'Calibri,Arial,sans-serif'});
+    catLbl.textContent = cat;
+    svg.appendChild(catLbl);
+  });
+
+  // optional reference line (drawn after bars, on top)
+  if(opts.referenceValue !== undefined){
+    const ry = yScale(opts.referenceValue);
+    svg.appendChild(el('line', {x1:M.left, x2:W-M.right, y1:ry, y2:ry, stroke:COLOR.rust, 'stroke-width':2, 'stroke-dasharray':'7,5'}));
+  }
+}
+
+/* ============================================================
+   Line chart (with crosshair + point hover)
+   ============================================================ */
+function renderLineChart(svgId, opts){
+  const svg = document.getElementById(svgId);
+  const stageEl = svg.closest('.stage');
+  const W = 740, H = 437;
+  const M = {top: 24, right: 20, bottom: 34, left: 52};
+  const plotW = W - M.left - M.right;
+  const plotH = H - M.top - M.bottom;
+  const n = opts.categories.length;
+
+  const yMin = opts.yMin, yMax = opts.yMax, yTicks = opts.yTicks;
+  const yScale = v => M.top + plotH - ((v-yMin) / (yMax-yMin)) * plotH;
+  const xScale = i => M.left + (n===1 ? plotW/2 : (plotW/(n-1))*i);
+
+  yTicks.forEach(t=>{
+    const y = yScale(t);
+    svg.appendChild(el('line', {x1:M.left, x2:W-M.right, y1:y, y2:y, stroke:COLOR.grid, 'stroke-width':1}));
+    const label = el('text', {x:M.left-10, y:y+4, 'text-anchor':'end', 'font-size':11, fill:COLOR.inkMuted, 'font-family':'Calibri,Arial,sans-serif'});
+    label.textContent = opts.tickFormat ? opts.tickFormat(t) : t;
+    svg.appendChild(label);
+  });
+  svg.appendChild(el('line', {x1:M.left, x2:W-M.right, y1:M.top+plotH, y2:M.top+plotH, stroke:COLOR.grid, 'stroke-width':1.4}));
+
+  const pts = opts.values.map((v,i)=>({x:xScale(i), y:yScale(v), v}));
+  const pathD = pts.map((p,i)=> (i===0?'M':'L') + p.x + ',' + p.y).join(' ');
+  svg.appendChild(el('path', {d:pathD, fill:'none', stroke:opts.color, 'stroke-width':3, 'stroke-linejoin':'round', 'stroke-linecap':'round'}));
+
+  const crosshair = el('line', {x1:0,x2:0,y1:M.top,y2:M.top+plotH, stroke:opts.color, 'stroke-width':1, 'stroke-dasharray':'3,4', opacity:0});
+  svg.appendChild(crosshair);
+
+  pts.forEach((p,i)=>{
+    svg.appendChild(el('circle', {cx:p.x, cy:p.y, r:6, fill:opts.color, stroke:opts.bg||'#F4ECDD', 'stroke-width':2}));
+    const lbl = el('text', {x:p.x, y:p.y-14, 'text-anchor':'middle', 'font-size':12, fill:COLOR.ink, 'font-family':'Calibri,Arial,sans-serif', style:'pointer-events:none'});
+    lbl.textContent = opts.labelFormat ? opts.labelFormat(p.v) : p.v;
+    svg.appendChild(lbl);
+
+    const hoverR = el('circle', {cx:p.x, cy:M.top+plotH/2, r:0, fill:'transparent'});
+    const hitZoneW = n===1 ? plotW : plotW/(n-1);
+    const hover = el('rect', {x:p.x-hitZoneW/2, y:M.top, width:hitZoneW, height:plotH, fill:'transparent'});
+    hover.addEventListener('mouseenter', (e)=>{
+      crosshair.setAttribute('x1',p.x); crosshair.setAttribute('x2',p.x); crosshair.setAttribute('opacity',1);
+      showTooltip(stageEl, e.clientX, e.clientY, `${opts.categories[i]}<br><b>${opts.name||''}</b> ${opts.labelFormat?opts.labelFormat(p.v):p.v}${opts.unit||''}`);
+    });
+    hover.addEventListener('mousemove', (e)=>{ showTooltip(stageEl, e.clientX, e.clientY, tooltip.innerHTML); });
+    hover.addEventListener('mouseleave', ()=>{ crosshair.setAttribute('opacity',0); hideTooltip(); });
+    svg.appendChild(hover);
+  });
+
+  opts.categories.forEach((cat,i)=>{
+    const catLbl = el('text', {x:xScale(i), y:H-M.bottom+22, 'text-anchor':'middle', 'font-size':13, fill:COLOR.inkMuted, 'font-family':'Calibri,Arial,sans-serif'});
+    catLbl.textContent = cat;
+    svg.appendChild(catLbl);
+  });
+}
+
+/* ---------- build each chart ---------- */
+renderBarChart('chart-revenue', {
+  categories: MONTHS,
+  series: [
+    {name:'실제 매출(만원)', values:REVENUE, color:COLOR.brown},
+    {name:'목표(만원)', values:TARGET, color:COLOR.tan},
+  ],
+  yMax:4500, yTicks:[0,1000,2000,3000,4000],
+  tickFormat:(v)=>fmt(v), labelFormat:(v)=>fmt(v), unit:'만원'
+});
+
+renderBarChart('chart-achieve', {
+  categories: MONTHS,
+  series: [ {name:'달성률(%)', values:ACHIEVEMENT, color:COLOR.brown} ],
+  yMax:130, yTicks:[0,20,40,60,80,100,120],
+  tickFormat:(v)=>v+'%', labelFormat:(v)=>v.toFixed(1)+'%', unit:'%',
+  referenceValue:100, labelSize:12.5
+});
+
+renderBarChart('chart-members', {
+  categories: MONTHS,
+  series: [ {name:'신규 회원(명)', values:MEMBERS, color:COLOR.brown} ],
+  yMax:100, yTicks:[0,20,40,60,80,100],
+  tickFormat:(v)=>fmt(v), labelFormat:(v)=>fmt(v)+'명', unit:'명'
+});
+
+renderLineChart('chart-revisit', {
+  categories: MONTHS, values: REVISIT, color: COLOR.brown, bg:'#F4ECDD',
+  yMin:30, yMax:60, yTicks:[30,35,40,45,50,55,60],
+  tickFormat:(v)=>v+'%', labelFormat:(v)=>v+'%', unit:'%', name:'재방문율'
+});
+
+/* ============================================================
+   Slide navigation
+   ============================================================ */
+const deck = document.getElementById('deck');
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsWrap = document.getElementById('dots');
+const counter = document.getElementById('counter');
+let current = 0;
+
+slides.forEach((s,i)=>{
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.addEventListener('click', ()=> goTo(i));
+  dotsWrap.appendChild(d);
+});
+const dotEls = Array.from(dotsWrap.children);
+
+function goTo(i){
+  i = Math.max(0, Math.min(slides.length-1, i));
+  deck.scrollTo({left: i*deck.clientWidth, behavior:'smooth'});
+}
+document.getElementById('prevBtn').addEventListener('click', ()=> goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click', ()=> goTo(current+1));
+window.addEventListener('keydown', (e)=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); goTo(current+1); }
+  else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); goTo(current-1); }
+});
+
+let scrollTimer;
+deck.addEventListener('scroll', ()=>{
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(()=>{
+    current = Math.round(deck.scrollLeft / deck.clientWidth);
+    dotEls.forEach((d,i)=> d.classList.toggle('active', i===current));
+    counter.textContent = (current+1) + ' / ' + slides.length;
+  }, 60);
+});
+
+/* ---------- responsive scaling of fixed 1280x720 stage ---------- */
+function rescale(){
+  const scale = Math.min(window.innerWidth/1280, window.innerHeight/720) * 0.96;
+  stageEls.forEach(s => s.style.transform = `scale(${scale})`);
+}
+window.addEventListener('resize', rescale);
+rescale();
+</script>
+</body>
+</html>

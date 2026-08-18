@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브루헤이븐 카페 고객 만족도 설문 인포그래픽</title>
+<style>
+  :root{
+    --coffee:#3d2b1f;
+    --cream:#faf3e9;
+    --card:#ffffff;
+    --muted:#8a7863;
+    --border:#e7dccb;
+    --bar1:#c17f43;
+    --bar2:#7a9d54;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    background:var(--cream);
+    color:var(--coffee);
+    padding:5vw 6vw 8vw;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .kicker{font-size:.85rem;letter-spacing:.15em;color:var(--bar1);font-weight:700;text-transform:uppercase;margin-bottom:.6rem;}
+  h1{font-size:2rem;font-weight:800;margin-bottom:.4rem;}
+  .sub{color:#5a4636;font-size:1rem;margin-bottom:.6rem;}
+  .note{
+    font-size:.85rem;color:var(--muted);background:#fff8ee;
+    border:1px dashed var(--border);border-radius:8px;padding:.7rem 1rem;
+    margin-bottom:2.2rem;
+  }
+
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:1.6rem 1.8rem;margin-bottom:1.8rem;
+  }
+  .card h2{font-size:1.15rem;font-weight:700;margin-bottom:.3rem;}
+  .card .desc{font-size:.88rem;color:var(--muted);margin-bottom:1.2rem;}
+
+  .bar-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.55rem;}
+  .bar-label{width:150px;flex-shrink:0;font-size:.9rem;text-align:right;color:#4a3a2c;}
+  .bar-track{flex:1;position:relative;height:26px;background:#f1e7d8;border-radius:6px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px 0 0 6px;display:flex;align-items:center;}
+  .bar-value{
+    margin-left:.5rem;font-size:.85rem;font-weight:700;color:var(--coffee);
+    white-space:nowrap;
+  }
+
+  .pie-wrap{display:flex;gap:2.2rem;align-items:center;flex-wrap:wrap;}
+  .pie-legend{display:flex;flex-direction:column;gap:.5rem;}
+  .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.9rem;}
+  .legend-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+  .legend-pct{font-weight:700;margin-left:.2rem;color:var(--coffee);}
+
+  footer{margin-top:1.5rem;font-size:.85rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+  <div class="kicker">BREWHAVEN CAFE · CUSTOMER SURVEY</div>
+  <h1>고객 만족도 설문 결과</h1>
+  <p class="sub">2026년 8월 · 3개 지점 통합 응답</p>
+  <p class="note">※ '모바일 주문 앱 만족도' 문항은 이번 분기 신설 항목으로 아직 응답 집계가 없어(응답자수 0) 아래 그래프에서 제외했습니다.</p>
+
+  <div class="card">
+    <h2>문항별 평균 만족도 (5점 만점)</h2>
+    <p class="desc">각 문항의 응답을 매우만족 5점 ~ 매우불만족 1점으로 환산한 가중평균입니다.</p>
+
+    <svg viewBox="0 0 100 10" style="display:none"></svg>
+    <div id="bar-chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>대기 시간 만족도 응답 분포</h2>
+    <p class="desc">6개 문항 중 평균 점수가 가장 낮은 항목의 세부 응답 비율입니다. (응답자 84명)</p>
+    <div class="pie-wrap">
+      <svg id="pie-chart" width="220" height="220" viewBox="0 0 220 220"></svg>
+      <div class="pie-legend" id="pie-legend"></div>
+    </div>
+  </div>
+
+  <footer>자료: cafe_survey_data.xlsx · 실습용 가상 데이터</footer>
+
+<script>
+  // ── 막대그래프: 문항별 평균 만족도 ──
+  const barData = [
+    { label: "커피 맛 만족도", value: 4.31 },
+    { label: "직원 응대 친절도", value: 4.20 },
+    { label: "디저트·베이커리 만족도", value: 3.93 },
+    { label: "매장 좌석·인테리어", value: 3.69 },
+    { label: "가격 대비 만족도", value: 3.64 },
+    { label: "대기 시간", value: 3.40 }
+  ];
+  const maxScore = 5;
+  const barContainer = document.getElementById('bar-chart');
+  barData.forEach(d => {
+    const pct = (d.value / maxScore) * 100;
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-label">${d.label}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%; background:var(--bar1);"></div>
+      </div>
+      <div class="bar-value">${d.value.toFixed(2)}점</div>
+    `;
+    barContainer.appendChild(row);
+  });
+
+  // ── 원그래프: 대기 시간 응답 분포 (순수 SVG, 라이브러리 없이 직접 좌표 계산) ──
+  const pieData = [
+    { label: "매우만족", value: 18, color: "#7a9d54" },
+    { label: "만족",     value: 24, color: "#a8c686" },
+    { label: "보통",     value: 22, color: "#e0c9a6" },
+    { label: "불만족",   value: 14, color: "#d9925f" },
+    { label: "매우불만족", value: 6,  color: "#b5543a" }
+  ];
+  const total = pieData.reduce((sum, d) => sum + d.value, 0);
+  const cx = 110, cy = 110, r = 90;
+  let startAngle = -90; // 12시 방향부터 시작
+
+  function polarToCartesian(cx, cy, r, angleDeg){
+    const rad = (angleDeg * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  const pieSvg = document.getElementById('pie-chart');
+  const legendBox = document.getElementById('pie-legend');
+
+  pieData.forEach(d => {
+    const sweep = (d.value / total) * 360;
+    const endAngle = startAngle + sweep;
+    const startPt = polarToCartesian(cx, cy, r, startAngle);
+    const endPt = polarToCartesian(cx, cy, r, endAngle);
+    const largeArc = sweep > 180 ? 1 : 0;
+
+    const path = document.createElementNS(svgNS, "path");
+    const dAttr = `M ${cx} ${cy} L ${startPt.x} ${startPt.y} A ${r} ${r} 0 ${largeArc} 1 ${endPt.x} ${endPt.y} Z`;
+    path.setAttribute("d", dAttr);
+    path.setAttribute("fill", d.color);
+    path.setAttribute("stroke", "#ffffff");
+    path.setAttribute("stroke-width", "2");
+    pieSvg.appendChild(path);
+
+    const pct = ((d.value / total) * 100).toFixed(1);
+    const legendRow = document.createElement('div');
+    legendRow.className = 'legend-item';
+    legendRow.innerHTML = `<span class="legend-swatch" style="background:${d.color}"></span>${d.label} <span class="legend-pct">${pct}%</span> (${d.value}명)`;
+    legendBox.appendChild(legendRow);
+
+    startAngle = endAngle;
+  });
+</script>
+
+</body>
+</html>
